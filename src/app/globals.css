@@ -1,83 +1,237 @@
 @import "tailwindcss";
 
 :root {
-  --bg-primary: #0f0f1a;
-  --bg-secondary: #1a1a2e;
-  --bg-card: #16213e;
-  --accent-purple: #7c3aed;
-  --accent-blue: #3b82f6;
-  --accent-pink: #ec4899;
-  --accent-green: #10b981;
-  --accent-orange: #f59e0b;
-  --accent-red: #ef4444;
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --star-gold: #fbbf24;
-  --star-empty: #374151;
+  /* Kahoot brand */
+  --purple: #46178F;
+  --purple-deep: #25076B;
+  --purple-light: #864CBF;
+
+  /* Answer colors */
+  --k-red: #E21B3C;
+  --k-blue: #1368CE;
+  --k-yellow: #D89E00;
+  --k-green: #26890C;
+
+  /* Extended */
+  --bright-green: #66BF39;
+  --bright-blue: #45A3E5;
+  --bright-red: #FF3355;
+  --orange: #EB670F;
+  --golden: #FFC00A;
+  --teal: #0AA3A3;
+
+  /* Neutrals */
+  --white: #FFFFFF;
+  --near-white: #F2F2F2;
+  --gray: #999999;
+  --dark-gray: #333333;
 }
 
 @theme inline {
-  --color-bg-primary: var(--bg-primary);
-  --color-bg-secondary: var(--bg-secondary);
-  --color-bg-card: var(--bg-card);
-  --color-accent-purple: var(--accent-purple);
-  --color-accent-blue: var(--accent-blue);
-  --color-accent-pink: var(--accent-pink);
-  --color-accent-green: var(--accent-green);
-  --color-accent-orange: var(--accent-orange);
-  --color-accent-red: var(--accent-red);
-  --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
-  --color-star-gold: var(--star-gold);
-  --color-star-empty: var(--star-empty);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-k-purple: var(--purple);
+  --color-k-purple-deep: var(--purple-deep);
+  --color-k-purple-light: var(--purple-light);
+  --color-k-red: var(--k-red);
+  --color-k-blue: var(--k-blue);
+  --color-k-yellow: var(--k-yellow);
+  --color-k-green: var(--k-green);
+  --color-k-bright-green: var(--bright-green);
+  --color-k-bright-blue: var(--bright-blue);
+  --color-k-orange: var(--orange);
+  --color-k-golden: var(--golden);
+  --color-k-teal: var(--teal);
+  --color-k-white: var(--white);
+  --color-k-near-white: var(--near-white);
+  --color-k-gray: var(--gray);
+  --color-k-dark-gray: var(--dark-gray);
+  --font-sans: var(--font-montserrat);
 }
 
-body {
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+html, body {
+  background: var(--purple);
+  color: var(--white);
+  font-family: var(--font-sans), 'Montserrat', sans-serif;
   min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
 }
 
-* {
-  -webkit-tap-highlight-color: transparent;
+* { -webkit-tap-highlight-color: transparent; }
+
+/* ===== KAHOOT BUTTONS ===== */
+.btn-kahoot {
+  font-family: inherit;
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 4px;
+  padding: 14px 28px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  text-align: center;
+  color: white;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.25);
+  position: relative;
+}
+.btn-kahoot:active {
+  box-shadow: 0 2px 0 rgba(0,0,0,0.25);
+  transform: translateY(2px);
+}
+.btn-kahoot:hover { filter: brightness(1.08); }
+
+.btn-kahoot-green { background: var(--k-green); }
+.btn-kahoot-blue { background: var(--k-blue); }
+.btn-kahoot-red { background: var(--k-red); }
+.btn-kahoot-white {
+  background: white;
+  color: var(--dark-gray);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+}
+.btn-kahoot-disabled {
+  background: rgba(255,255,255,0.15);
+  font-family: inherit;
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border: 2px solid rgba(255,255,255,0.2);
+  border-radius: 4px;
+  padding: 14px 28px;
+  cursor: not-allowed;
+  color: rgba(255,255,255,0.4);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.1);
 }
 
+/* ===== SCENARIO CARD (Kahoot answer block style) ===== */
+.kahoot-card {
+  border-radius: 8px;
+  padding: 24px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: block;
+  text-decoration: none;
+  color: white;
+  font-family: inherit;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+  position: relative;
+  overflow: hidden;
+}
+.kahoot-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 0 rgba(0,0,0,0.2);
+}
+.kahoot-card:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+}
+
+/* ===== CONTENT CARD ===== */
+.content-card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  color: var(--dark-gray);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+}
+
+/* ===== TEXTAREA ===== */
+.prompt-textarea {
+  background: white;
+  border: 3px solid var(--near-white);
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 16px;
+  font-family: inherit;
+  resize: none;
+  width: 100%;
+  min-height: 120px;
+  color: var(--dark-gray);
+  transition: border-color 0.2s;
+}
+.prompt-textarea:focus {
+  outline: none;
+  border-color: var(--k-blue);
+}
+.prompt-textarea::placeholder { color: var(--gray); }
+
+/* ===== PROGRESS ===== */
+.step-dot {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 16px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+.step-dot.active {
+  background: var(--k-green);
+  color: white;
+  box-shadow: 0 0 0 4px rgba(38,137,12,0.3);
+}
+.step-dot.done { background: var(--k-green); color: white; }
+.step-dot.upcoming { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.5); }
+
+.step-connector { height: 4px; flex: 1; border-radius: 999px; }
+.step-connector.done { background: var(--k-green); }
+.step-connector.upcoming { background: rgba(255,255,255,0.15); }
+
+/* ===== ANIMATIONS ===== */
 @keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes bounceIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes starPop {
+  0% { transform: scale(0) rotate(-15deg); opacity: 0; }
+  50% { transform: scale(1.3) rotate(5deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+@keyframes confettiFall {
+  0% { transform: translateY(-10px) rotate(0); opacity: 1; }
+  100% { transform: translateY(80px) rotate(360deg); opacity: 0; }
+}
+@keyframes counterUp {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(124, 58, 237, 0.6); }
+.animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+.animate-slide-up { animation: slideUp 0.4s ease-out forwards; }
+.animate-bounce-in { animation: bounceIn 0.5s ease-out forwards; }
+.animate-star-pop { animation: starPop 0.5s ease-out forwards; opacity: 0; }
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-counter-up { animation: counterUp 0.4s ease-out forwards; }
+
+.confetti-piece {
+  position: absolute;
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  animation: confettiFall 1.5s ease-out forwards;
 }
 
-@keyframes star-pop {
-  0% { transform: scale(0); }
-  50% { transform: scale(1.3); }
-  100% { transform: scale(1); }
+/* XP shimmer */
+.xp-shimmer {
+  background: linear-gradient(90deg, #FFC00A 0%, #fff7a8 50%, #FFC00A 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 2.5s ease-in-out infinite;
 }
-
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-out forwards;
-}
-
-.animate-slide-up {
-  animation: slideUp 0.6s ease-out forwards;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-.animate-star-pop {
-  animation: star-pop 0.4s ease-out forwards;
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }

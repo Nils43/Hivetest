@@ -16,220 +16,169 @@ function evaluatePrompt(input: string, task: Task): number {
   const lower = input.toLowerCase();
   const words = lower.split(/\s+/);
   let score = 0;
-
-  // Check keyword matches
-  const matchedKeywords = task.keywords.filter((kw) =>
-    lower.includes(kw.toLowerCase())
-  );
-  const keywordRatio = matchedKeywords.length / task.keywords.length;
-
-  // Length check - good prompts are usually longer
-  if (words.length >= 30) score += 2;
-  else if (words.length >= 15) score += 1;
-
-  // Keyword scoring
-  if (keywordRatio >= 0.4) score += 3;
-  else if (keywordRatio >= 0.2) score += 2;
-  else if (keywordRatio >= 0.1) score += 1;
-
-  // Type-specific checks
-  if (task.type === "rolle") {
-    if (lower.includes("du bist") || lower.includes("stell dir vor"))
-      score += 2;
-  }
-  if (task.type === "ergebnis") {
-    // Check for format indicators
-    const formatIndicators = [
-      "1)",
-      "2)",
-      "3)",
-      "format",
-      "liste",
-      "gib mir",
-      "zusammenfassung",
-      "stichpunkt",
-      "- ",
-    ];
-    const hasFormat = formatIndicators.some((f) => lower.includes(f));
-    if (hasFormat) score += 2;
-  }
-
-  // Convert score to stars
+  const matched = task.keywords.filter((kw) => lower.includes(kw.toLowerCase()));
+  const ratio = matched.length / task.keywords.length;
+  if (words.length >= 30) score += 2; else if (words.length >= 15) score += 1;
+  if (ratio >= 0.4) score += 3; else if (ratio >= 0.2) score += 2; else if (ratio >= 0.1) score += 1;
+  if (task.type === "rolle" && (lower.includes("du bist") || lower.includes("stell dir vor"))) score += 2;
+  if (task.type === "ergebnis" && ["1)","2)","3)","format","liste","gib mir","zusammenfassung","stichpunkt","- "].some(f => lower.includes(f))) score += 2;
   if (score >= 6) return 3;
   if (score >= 3) return 2;
   return 1;
 }
 
-export default function TaskView({
-  task,
-  taskNumber,
-  totalTasks,
-  scenarioColor,
-  onComplete,
-}: TaskViewProps) {
+const typeConfig: Record<string, { label: string; color: string }> = {
+  rolle:    { label: "Rolle vergeben",    color: "#864CBF" },
+  fehler:   { label: "Fehler finden",     color: "#E21B3C" },
+  ergebnis: { label: "Ergebnis definieren", color: "#1368CE" },
+};
+
+export default function TaskView({ task, taskNumber, totalTasks, onComplete }: TaskViewProps) {
   const [prompt, setPrompt] = useState("");
   const [showResult, setShowResult] = useState(false);
   const [stars, setStars] = useState(0);
   const [showHints, setShowHints] = useState(false);
   const [showExample, setShowExample] = useState(false);
 
-  const typeLabels = {
-    rolle: "🎭 Rolle vergeben",
-    fehler: "🔍 Fehler finden",
-    ergebnis: "🎯 Ergebnis definieren",
-  };
+  const config = typeConfig[task.type];
+  const wordCount = prompt.trim().split(/\s+/).filter(Boolean).length;
+  const canSubmit = prompt.trim().length >= 10;
 
   const handleSubmit = () => {
-    if (prompt.trim().length < 10) return;
-    const result = evaluatePrompt(prompt, task);
-    setStars(result);
+    if (!canSubmit) return;
+    setStars(evaluatePrompt(prompt, task));
     setShowResult(true);
   };
 
-  const getFeedback = () => {
-    if (stars === 3) return task.feedback.threeStars;
-    if (stars === 2) return task.feedback.twoStars;
-    return task.feedback.oneStar;
-  };
-
   return (
-    <div className="min-h-dvh bg-bg-primary p-4 pb-8">
-      {/* Progress bar */}
-      <div className="max-w-lg mx-auto mb-6">
+    <>
+      {/* Full viewport layout – no scrolling */}
+      <div className="h-[calc(100dvh-65px)] bg-k-purple flex flex-col justify-center px-3 sm:px-5 py-3 sm:max-w-3xl sm:mx-auto">
+        {/* Top: Steps + badge (compact) */}
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm text-text-secondary">
-            Aufgabe {taskNumber} von {totalTasks}
+          <div className="flex items-center gap-0">
+            {Array.from({ length: totalTasks }).map((_, i) => (
+              <div key={i} className="flex items-center">
+                <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-black text-[11px] sm:text-[13px] ${
+                  i < taskNumber - 1 ? "bg-k-green text-white" : i === taskNumber - 1 ? "bg-k-green text-white ring-2 ring-k-green/30" : "bg-white/15 text-white/50"
+                }`}>
+                  {i < taskNumber - 1 ? "✓" : i + 1}
+                </div>
+                {i < totalTasks - 1 && <div className={`w-6 sm:w-8 h-[3px] rounded ${i < taskNumber - 1 ? "bg-k-green" : "bg-white/15"}`} />}
+              </div>
+            ))}
+          </div>
+          <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-[1px] px-2 sm:px-3 py-1 rounded" style={{ background: config.color }}>
+            {config.label}
           </span>
-          <span className="text-sm font-medium">{typeLabels[task.type]}</span>
-        </div>
-        <div className="h-2 bg-bg-card rounded-full overflow-hidden">
-          <div
-            className={`h-full bg-${scenarioColor} rounded-full transition-all duration-500`}
-            style={{ width: `${(taskNumber / totalTasks) * 100}%` }}
-          />
-        </div>
-      </div>
-
-      {/* Task content */}
-      <div className="max-w-lg mx-auto space-y-4 animate-slide-up">
-        <h2 className="text-xl font-bold">{task.title}</h2>
-
-        {/* Situation */}
-        <div className="bg-bg-secondary rounded-xl p-4">
-          <p className="text-sm font-semibold text-text-secondary mb-1">
-            Situation
-          </p>
-          <p className="text-sm leading-relaxed">{task.situation}</p>
         </div>
 
-        {/* Bad prompt + output for "fehler" type */}
-        {task.type === "fehler" && task.badPrompt && task.badOutput && (
-          <div className="space-y-3">
-            <div className="bg-accent-red/10 border border-accent-red/30 rounded-xl p-4">
-              <p className="text-sm font-semibold text-accent-red mb-1">
-                ❌ Fehlerhafter Prompt
-              </p>
-              <p className="text-sm italic">&quot;{task.badPrompt}&quot;</p>
+        {/* Title */}
+        <h2 className="text-[16px] sm:text-[20px] font-black text-white text-center mb-2">{task.title}</h2>
+
+        {/* Middle: Content area – fills available space */}
+        <div className="flex-1 flex flex-col min-h-0 gap-2">
+          {/* Info cards row */}
+          <div className="grid grid-cols-2 gap-2 flex-shrink-0">
+            {/* Situation card */}
+            <div className="bg-white rounded-lg p-2 sm:p-4 text-k-dark-gray">
+              <p className="text-[9px] sm:text-[10px] font-black text-k-gray uppercase tracking-[2px] mb-1">Situation</p>
+              <p className="text-[11px] sm:text-[13px] leading-snug">{task.situation}</p>
             </div>
-            <div className="bg-accent-orange/10 border border-accent-orange/30 rounded-xl p-4">
-              <p className="text-sm font-semibold text-accent-orange mb-1">
-                🤖 Falsches Ergebnis
-              </p>
-              <p className="text-sm leading-relaxed whitespace-pre-line">
-                {task.badOutput}
-              </p>
-            </div>
-          </div>
-        )}
 
-        {/* Instruction */}
-        <div className="bg-bg-card rounded-xl p-4 border border-white/5">
-          <p className="text-sm font-semibold mb-1">📝 Deine Aufgabe</p>
-          <p className="text-sm leading-relaxed text-text-secondary">
-            {task.instruction}
-          </p>
-        </div>
-
-        {/* Hints toggle */}
-        <button
-          onClick={() => setShowHints(!showHints)}
-          className="text-sm text-accent-purple hover:underline"
-        >
-          {showHints ? "💡 Tipps ausblenden" : "💡 Brauchst du Tipps?"}
-        </button>
-
-        {showHints && (
-          <div className="bg-accent-purple/10 border border-accent-purple/20 rounded-xl p-4 animate-fade-in">
-            <ul className="space-y-1">
-              {task.hints.map((hint, i) => (
-                <li key={i} className="text-sm text-text-secondary">
-                  • {hint}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {/* Prompt input */}
-        <div>
-          <textarea
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Schreibe deinen Prompt hier..."
-            className="w-full h-36 bg-bg-secondary border border-white/10 rounded-xl p-4 text-sm resize-none focus:outline-none focus:border-accent-purple transition-colors placeholder:text-text-secondary/50"
-          />
-          <div className="flex items-center justify-between mt-2">
-            <span className="text-xs text-text-secondary">
-              {prompt.trim().split(/\s+/).filter(Boolean).length} Wörter
-            </span>
-            <button
-              onClick={handleSubmit}
-              disabled={prompt.trim().length < 10}
-              className={`px-6 py-2.5 rounded-xl font-semibold text-sm transition-all ${
-                prompt.trim().length >= 10
-                  ? `bg-${scenarioColor} text-white hover:brightness-110 animate-pulse-glow`
-                  : "bg-bg-card text-text-secondary cursor-not-allowed"
-              }`}
-            >
-              Prompt abschicken
-            </button>
-          </div>
-        </div>
-
-        {/* Show example after submission */}
-        {showResult && (
-          <div className="mt-4">
-            <button
-              onClick={() => setShowExample(!showExample)}
-              className="text-sm text-accent-green hover:underline"
-            >
-              {showExample
-                ? "✅ Beispiel-Prompt ausblenden"
-                : "✅ Beispiel-Prompt anzeigen"}
-            </button>
-            {showExample && (
-              <div className="bg-accent-green/10 border border-accent-green/20 rounded-xl p-4 mt-2 animate-fade-in">
-                <p className="text-sm font-semibold text-accent-green mb-1">
-                  So könnte ein guter Prompt aussehen:
-                </p>
-                <p className="text-sm italic text-text-secondary">
-                  &quot;{task.exampleGoodPrompt}&quot;
-                </p>
+            {/* Fehler type: show bad prompt instead of instruction here */}
+            {task.type === "fehler" && task.badPrompt ? (
+              <div className="bg-white rounded-lg p-2 sm:p-4 text-k-dark-gray" style={{ borderLeft: `3px solid #E21B3C` }}>
+                <p className="text-[9px] sm:text-[10px] font-black text-k-red uppercase tracking-[2px] mb-1">Fehlerhafter Prompt</p>
+                <p className="text-[11px] sm:text-[13px] italic bg-k-near-white rounded p-1.5">&quot;{task.badPrompt}&quot;</p>
+              </div>
+            ) : (
+              <div className="bg-white rounded-lg p-2 sm:p-4 text-k-dark-gray" style={{ borderLeft: `3px solid ${config.color}` }}>
+                <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-[2px] mb-1" style={{ color: config.color }}>Deine Aufgabe</p>
+                <p className="text-[11px] sm:text-[13px] leading-snug">{task.instruction}</p>
               </div>
             )}
           </div>
-        )}
+
+          {/* For fehler: show instruction + bad output in a second row */}
+          {task.type === "fehler" && task.badOutput && (
+            <div className="grid grid-cols-2 gap-2 flex-shrink-0">
+              <div className="bg-white rounded-lg p-2 sm:p-4 text-k-dark-gray" style={{ borderLeft: `3px solid #EB670F` }}>
+                <p className="text-[9px] sm:text-[10px] font-black text-k-orange uppercase tracking-[2px] mb-1">KI-Antwort</p>
+                <p className="text-[11px] sm:text-[13px] leading-snug line-clamp-3">{task.badOutput}</p>
+              </div>
+              <div className="bg-white rounded-lg p-2 sm:p-4 text-k-dark-gray" style={{ borderLeft: `3px solid ${config.color}` }}>
+                <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-[2px] mb-1" style={{ color: config.color }}>Deine Aufgabe</p>
+                <p className="text-[11px] sm:text-[13px] leading-snug">{task.instruction}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Hints (collapsible, compact) */}
+          <div className="flex-shrink-0">
+            <button onClick={() => setShowHints(!showHints)} className="text-[11px] sm:text-[12px] font-black text-k-golden uppercase tracking-[1px]">
+              {showHints ? "— Tipps" : "+ Tipps"}
+            </button>
+            {showHints && (
+              <div className="bg-white rounded-lg p-2 sm:p-3 mt-1 animate-fade-in text-k-dark-gray" style={{ borderLeft: "3px solid #FFC00A" }}>
+                <div className="flex flex-wrap gap-x-4 gap-y-1">
+                  {task.hints.map((hint, i) => (
+                    <p key={i} className="text-[11px] sm:text-[12px]"><span className="text-k-golden font-black">&#x25B8;</span> {hint}</p>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Textarea – flexible height, capped */}
+          <div className="flex-1 flex flex-col min-h-0 max-h-[220px] sm:flex-none sm:h-[180px]">
+            <textarea
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder="Schreibe deinen Prompt hier ..."
+              className="prompt-textarea flex-1"
+              style={{ minHeight: "60px" }}
+            />
+          </div>
+
+          {/* Button bar – directly under textarea */}
+          <div className="flex items-center justify-between pt-2 flex-shrink-0">
+            <span className="text-[12px] font-bold text-white/40">{wordCount} Wörter</span>
+            <button
+              onClick={handleSubmit}
+              disabled={!canSubmit}
+              className={canSubmit ? "btn-kahoot btn-kahoot-green" : "btn-kahoot btn-kahoot-white"}
+              style={!canSubmit ? { opacity: 0.4 } : {}}
+            >
+              Abschicken
+            </button>
+          </div>
+
+          {/* Example (only after result) */}
+          {showResult && (
+            <div className="flex-shrink-0">
+              <button onClick={() => setShowExample(!showExample)} className="text-[11px] font-black text-k-bright-green uppercase tracking-[1px]">
+                {showExample ? "— Beispiel" : "+ Beispiel-Prompt"}
+              </button>
+              {showExample && (
+                <div className="bg-white rounded-lg p-2 sm:p-3 mt-1 animate-fade-in text-k-dark-gray" style={{ borderLeft: "3px solid #26890C" }}>
+                  <p className="text-[11px] sm:text-[12px] italic leading-snug">&quot;{task.exampleGoodPrompt}&quot;</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
       </div>
 
-      {/* Star Rating Modal */}
       {showResult && (
         <StarRating
           stars={stars}
-          feedback={getFeedback()}
+          feedback={stars === 3 ? task.feedback.threeStars : stars === 2 ? task.feedback.twoStars : task.feedback.oneStar}
           onContinue={() => onComplete(stars)}
           isLastTask={taskNumber === totalTasks}
         />
       )}
-    </div>
+    </>
   );
 }
