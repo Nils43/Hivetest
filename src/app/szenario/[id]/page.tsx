@@ -117,7 +117,6 @@ export default function SzenarioPage() {
         task={scenario.tasks[currentTask]}
         taskNumber={currentTask + 1}
         totalTasks={scenario.tasks.length}
-        scenarioColor={scenario.color}
         onComplete={(earnedStars: number) => {
           setTotalStars((prev) => prev + earnedStars);
           setTaskStars((prev) => [...prev, earnedStars]);
