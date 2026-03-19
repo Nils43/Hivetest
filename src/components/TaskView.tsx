@@ -34,12 +34,11 @@ const typeIcons: Record<string, React.ReactNode> = {
   ergebnis: <IconTarget  size={16} color="white" />,
 };
 
-// Fluid clamp values for responsive scaling
 const fs = {
-  label: "clamp(9px, 1vw, 11px)",
-  body:  "clamp(12px, 1.4vw, 14px)",
-  title: "clamp(14px, 1.8vw, 18px)",
-  small: "clamp(11px, 1.2vw, 13px)",
+  label: "clamp(10px, 1.1vw, 12px)",
+  body:  "clamp(14px, 1.6vw, 16px)",
+  title: "clamp(18px, 2.4vw, 22px)",
+  small: "clamp(13px, 1.4vw, 15px)",
 };
 
 export default function TaskView({ task, taskNumber, totalTasks, onComplete }: TaskViewProps) {
@@ -99,12 +98,12 @@ export default function TaskView({ task, taskNumber, totalTasks, onComplete }: T
     <>
       <div
         className="flex-1 min-h-0 flex flex-col max-w-3xl mx-auto w-full"
-        style={{ padding: "clamp(8px, 1.5vh, 20px) clamp(12px, 2vw, 24px)", gap: "clamp(6px, 1.2vh, 12px)" }}
+        style={{ padding: "clamp(14px, 2vh, 24px) clamp(16px, 2.5vw, 28px)", gap: "clamp(10px, 1.5vh, 16px)" }}
       >
 
         {/* Title + type badge */}
         <div className="flex items-start justify-between gap-3 shrink-0">
-          <h2 className="font-black text-text-primary flex-1 leading-snug" style={{ fontSize: fs.title }}>
+          <h2 className="font-black flex-1 leading-snug" style={{ fontSize: fs.title, color: "#1A1A2E" }}>
             {task.title}
           </h2>
           <span className="type-badge shrink-0 mt-0.5" style={{ background: config.color }}>
@@ -114,36 +113,36 @@ export default function TaskView({ task, taskNumber, totalTasks, onComplete }: T
         </div>
 
         {/* Info cards */}
-        <div className="grid grid-cols-2 shrink-0" style={{ gap: "clamp(6px, 1vw, 12px)" }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 shrink-0" style={{ gap: "clamp(8px, 1.2vw, 14px)" }}>
           {/* Situation */}
           <div className="info-card">
-            <p className="font-black text-text-tertiary uppercase tracking-wider flex items-center gap-1.5" style={{ fontSize: fs.label, marginBottom: "clamp(4px, 0.6vh, 8px)" }}>
-              <IconPin size={11} color="#A8A4B8" />
+            <p className="font-black uppercase tracking-wider flex items-center gap-1.5" style={{ fontSize: fs.label, color: "#9090AA", marginBottom: "clamp(6px, 0.8vh, 10px)" }}>
+              <IconPin size={11} color="#9090AA" />
               Situation
             </p>
-            <p className="font-semibold text-text-primary leading-snug" style={{ fontSize: fs.body }}>
+            <p className="font-semibold leading-snug" style={{ fontSize: fs.body, color: "#1A1A2E" }}>
               {task.situation}
             </p>
           </div>
 
           {/* Task or bad prompt */}
           {task.type === "fehler" && task.badPrompt ? (
-            <div className="rounded-[16px] border-2" style={{ background: "#FEE2E2", borderColor: "#DC262620", padding: "clamp(8px, 1.2vh, 14px) clamp(10px, 1.2vw, 14px)" }}>
-              <p className="font-black text-error uppercase tracking-wider flex items-center gap-1.5" style={{ fontSize: fs.label, marginBottom: "clamp(4px, 0.6vh, 8px)" }}>
-                <IconXCircle size={11} color="#DC2626" />
+            <div className="rounded-[16px] border-2" style={{ background: "#FFE8EA", borderColor: "#E6394625", padding: "clamp(12px, 1.5vh, 16px) clamp(12px, 1.5vw, 16px)" }}>
+              <p className="font-black uppercase tracking-wider flex items-center gap-1.5" style={{ fontSize: fs.label, color: "#E63946", marginBottom: "clamp(6px, 0.8vh, 10px)" }}>
+                <IconXCircle size={11} color="#E63946" />
                 Fehlerhafter Prompt
               </p>
-              <p className="font-semibold text-text-primary italic" style={{ fontSize: fs.body }}>
+              <p className="font-semibold italic" style={{ fontSize: fs.body, color: "#1A1A2E" }}>
                 &quot;{task.badPrompt}&quot;
               </p>
             </div>
           ) : (
-            <div className="rounded-[16px] border-2" style={{ background: config.bg, borderColor: `${config.color}20`, padding: "clamp(8px, 1.2vh, 14px) clamp(10px, 1.2vw, 14px)" }}>
-              <p className="font-black uppercase tracking-wider flex items-center gap-1.5" style={{ fontSize: fs.label, color: config.color, marginBottom: "clamp(4px, 0.6vh, 8px)" }}>
+            <div className="rounded-[16px] border-2" style={{ background: config.bg, borderColor: `${config.color}20`, padding: "clamp(12px, 1.5vh, 16px) clamp(12px, 1.5vw, 16px)" }}>
+              <p className="font-black uppercase tracking-wider flex items-center gap-1.5" style={{ fontSize: fs.label, color: config.color, marginBottom: "clamp(6px, 0.8vh, 10px)" }}>
                 {typeIcons[task.type]}
                 Deine Aufgabe
               </p>
-              <p className="font-semibold text-text-primary leading-snug" style={{ fontSize: fs.body }}>
+              <p className="font-semibold leading-snug" style={{ fontSize: fs.body, color: "#1A1A2E" }}>
                 {task.instruction}
               </p>
             </div>
@@ -152,26 +151,26 @@ export default function TaskView({ task, taskNumber, totalTasks, onComplete }: T
 
         {/* Bad output (fehler type) */}
         {task.type === "fehler" && task.badOutput && (
-          <div className="grid grid-cols-2 shrink-0" style={{ gap: "clamp(6px, 1vw, 12px)" }}>
-            <div className="rounded-[16px] border-2" style={{ background: "#FFF7ED", borderColor: "#EA580C20", padding: "clamp(8px, 1.2vh, 14px) clamp(10px, 1.2vw, 14px)" }}>
-              <p className="font-black text-xp uppercase tracking-wider flex items-center gap-1.5" style={{ fontSize: fs.label, marginBottom: "clamp(4px, 0.6vh, 8px)" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 shrink-0" style={{ gap: "clamp(8px, 1.2vw, 14px)" }}>
+            <div className="rounded-[16px] border-2" style={{ background: "#FFE4EF", borderColor: "#FF6B9D20", padding: "clamp(12px, 1.5vh, 16px) clamp(12px, 1.5vw, 16px)" }}>
+              <p className="font-black uppercase tracking-wider flex items-center gap-1.5" style={{ color: "#FF6B9D", fontSize: fs.label, marginBottom: "clamp(6px, 0.8vh, 10px)" }}>
                 <svg width="11" height="11" viewBox="0 0 48 48" fill="none">
-                  <rect x="8" y="11" width="32" height="24" rx="6" fill="#EA580C"/>
+                  <rect x="8" y="11" width="32" height="24" rx="6" fill="#FF6B9D"/>
                   <rect x="14" y="18" width="8" height="7" rx="2" fill="white"/>
                   <rect x="26" y="18" width="8" height="7" rx="2" fill="white"/>
                 </svg>
                 KI-Antwort (falsch)
               </p>
-              <p className="font-semibold text-text-primary leading-snug line-clamp-3" style={{ fontSize: fs.body }}>
+              <p className="font-semibold leading-snug line-clamp-3" style={{ fontSize: fs.body, color: "#1A1A2E" }}>
                 {task.badOutput}
               </p>
             </div>
-            <div className="rounded-[16px] border-2" style={{ background: config.bg, borderColor: `${config.color}20`, padding: "clamp(8px, 1.2vh, 14px) clamp(10px, 1.2vw, 14px)" }}>
-              <p className="font-black uppercase tracking-wider flex items-center gap-1.5" style={{ fontSize: fs.label, color: config.color, marginBottom: "clamp(4px, 0.6vh, 8px)" }}>
+            <div className="rounded-[16px] border-2" style={{ background: config.bg, borderColor: `${config.color}20`, padding: "clamp(12px, 1.5vh, 16px) clamp(12px, 1.5vw, 16px)" }}>
+              <p className="font-black uppercase tracking-wider flex items-center gap-1.5" style={{ fontSize: fs.label, color: config.color, marginBottom: "clamp(6px, 0.8vh, 10px)" }}>
                 {typeIcons[task.type]}
                 Deine Aufgabe
               </p>
-              <p className="font-semibold text-text-primary leading-snug" style={{ fontSize: fs.body }}>
+              <p className="font-semibold leading-snug" style={{ fontSize: fs.body, color: "#1A1A2E" }}>
                 {task.instruction}
               </p>
             </div>
@@ -183,20 +182,20 @@ export default function TaskView({ task, taskNumber, totalTasks, onComplete }: T
           <button
             onClick={() => setShowHints(!showHints)}
             className="font-black flex items-center gap-1.5"
-            style={{ color: "#7C3AED", fontSize: fs.small }}
+            style={{ color: "#7B2FBE", fontSize: fs.small }}
           >
-            <IconLightbulb size={14} color="#7C3AED" />
+            <IconLightbulb size={15} color="#7B2FBE" />
             {showHints ? "Tipps ausblenden" : "Tipps anzeigen"}
           </button>
           {showHints && (
             <div
               className="rounded-[16px] animate-fade-in border-2 overflow-y-auto"
-              style={{ background: "#F5F3FF", borderColor: "#7C3AED20", marginTop: "clamp(4px, 0.6vh, 8px)", padding: "clamp(8px, 1vh, 12px)", maxHeight: "clamp(80px, 12vh, 140px)" }}
+              style={{ background: "#EDE0FF", borderColor: "#7B2FBE20", marginTop: "clamp(6px, 0.8vh, 10px)", padding: "clamp(10px, 1.2vh, 14px)", maxHeight: "clamp(90px, 13vh, 150px)" }}
             >
-              <div className="flex flex-col gap-1.5">
+              <div className="flex flex-col gap-2">
                 {task.hints.map((hint, i) => (
-                  <p key={i} className="font-semibold text-text-primary flex gap-2 items-start" style={{ fontSize: fs.small }}>
-                    <IconLightbulb size={13} color="#7C3AED" />
+                  <p key={i} className="font-semibold flex gap-2 items-start" style={{ fontSize: fs.small, color: "#1A1A2E" }}>
+                    <IconLightbulb size={14} color="#7B2FBE" />
                     <span>{hint}</span>
                   </p>
                 ))}
@@ -205,20 +204,20 @@ export default function TaskView({ task, taskNumber, totalTasks, onComplete }: T
           )}
         </div>
 
-        {/* Textarea or AI response — fills remaining space */}
+        {/* Textarea or AI response */}
         <div className="flex-1 min-h-0">
           {showResult && aiResponse ? (
             <div
               className="h-full overflow-y-auto rounded-[16px] border-2"
-              style={{ background: "#DCFCE7", borderColor: "#16A34A20", padding: "clamp(8px, 1.2vh, 14px) clamp(10px, 1.2vw, 14px)" }}
+              style={{ background: "#CCFAED", borderColor: "#06D6A020", padding: "clamp(12px, 1.5vh, 16px) clamp(12px, 1.5vw, 16px)" }}
             >
-              <p className="font-black text-success uppercase tracking-wider flex items-center gap-1.5" style={{ fontSize: fs.label, marginBottom: "clamp(4px, 0.6vh, 8px)" }}>
-                <svg width="11" height="11" viewBox="0 0 16 16" fill="none">
-                  <path d="M2 8L6.5 12.5L14 4" stroke="#16A34A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <p className="font-black uppercase tracking-wider flex items-center gap-1.5" style={{ color: "#06D6A0", fontSize: fs.label, marginBottom: "clamp(6px, 0.8vh, 10px)" }}>
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                  <path d="M2 8L6.5 12.5L14 4" stroke="#06D6A0" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
                 KI-Antwort auf deinen Prompt
               </p>
-              <p className="font-semibold text-text-primary leading-relaxed whitespace-pre-line" style={{ fontSize: fs.body }}>
+              <p className="font-semibold leading-relaxed whitespace-pre-line" style={{ fontSize: fs.body, color: "#1A1A2E" }}>
                 {aiResponse}
               </p>
             </div>
@@ -235,14 +234,14 @@ export default function TaskView({ task, taskNumber, totalTasks, onComplete }: T
 
         {/* Submit bar */}
         <div className="flex items-center justify-between shrink-0">
-          <span className="font-bold text-text-tertiary flex items-center gap-1.5" style={{ fontSize: fs.small }}>
-            <IconPencil size={13} color="#A8A4B8" />
+          <span className="font-bold flex items-center gap-1.5" style={{ fontSize: fs.small, color: "#9090AA" }}>
+            <IconPencil size={14} color="#9090AA" />
             {wordCount} {wordCount === 1 ? "Wort" : "Wörter"}
           </span>
           {isLoading ? (
             <div className="flex items-center gap-2">
-              <div className="animate-spin border-2 border-[#E8E8F0] rounded-full" style={{ width: "clamp(16px, 2vw, 20px)", height: "clamp(16px, 2vw, 20px)", borderTopColor: "#7C3AED" }} />
-              <span className="font-bold text-text-secondary" style={{ fontSize: fs.small }}>KI analysiert...</span>
+              <div className="animate-spin border-2 rounded-full" style={{ width: "clamp(18px, 2.2vw, 22px)", height: "clamp(18px, 2.2vw, 22px)", borderColor: "#E8E6F0", borderTopColor: "#3A86FF" }} />
+              <span className="font-bold" style={{ fontSize: fs.small, color: "#9090AA" }}>KI analysiert...</span>
             </div>
           ) : !showResult ? (
             <button
@@ -262,20 +261,20 @@ export default function TaskView({ task, taskNumber, totalTasks, onComplete }: T
             <button
               onClick={() => setShowExample(!showExample)}
               className="font-black flex items-center gap-1.5"
-              style={{ color: "#7C3AED", fontSize: fs.small }}
+              style={{ color: "#3A86FF", fontSize: fs.small }}
             >
-              <IconEye size={14} color="#7C3AED" />
+              <IconEye size={15} color="#3A86FF" />
               {showExample ? "Beispiel ausblenden" : "Beispiel-Prompt anzeigen"}
             </button>
             {showExample && (
               <div
                 className="rounded-[16px] animate-fade-in border-2 overflow-y-auto"
-                style={{ background: "#EDE9FE", borderColor: "#7C3AED20", marginTop: "clamp(4px, 0.6vh, 8px)", padding: "clamp(8px, 1vh, 12px)", maxHeight: "clamp(70px, 10vh, 110px)" }}
+                style={{ background: "#E0ECFF", borderColor: "#3A86FF20", marginTop: "clamp(6px, 0.8vh, 10px)", padding: "clamp(10px, 1.2vh, 14px)", maxHeight: "clamp(80px, 11vh, 120px)" }}
               >
-                <p className="font-black uppercase tracking-wider" style={{ color: "#7C3AED", fontSize: fs.label, marginBottom: "clamp(3px, 0.5vh, 6px)" }}>
+                <p className="font-black uppercase tracking-wider" style={{ color: "#3A86FF", fontSize: fs.label, marginBottom: "clamp(4px, 0.5vh, 6px)" }}>
                   Beispiel-Prompt
                 </p>
-                <p className="font-semibold text-text-primary italic leading-relaxed" style={{ fontSize: fs.small }}>
+                <p className="font-semibold italic leading-relaxed" style={{ fontSize: fs.small, color: "#1A1A2E" }}>
                   &quot;{task.exampleGoodPrompt}&quot;
                 </p>
               </div>

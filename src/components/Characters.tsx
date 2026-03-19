@@ -54,10 +54,10 @@ function EyeWink({ cx, cy, r = 11 }: { cx: number; cy: number; r?: number }) {
 // ─────────────────────────────────────────────────────────────────────────────
 // Shared body/head base props
 // ─────────────────────────────────────────────────────────────────────────────
-const P = "#7C3AED"; // brand violet
-const PS = "#5B21B6"; // shadow
-const PD = "#4C1D95"; // deep shadow
-const OL = "#1E1B2E"; // outline
+const P = "#37ebf3"; // brand aqua
+const PS = "#1ac5b0"; // shadow
+const PD = "#0fa898"; // deep shadow
+const OL = "#1A1A2E"; // outline
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. MASCOT — curious wave, waving left arm
@@ -70,7 +70,7 @@ export function CharacterMascot({ size = 100 }: { size?: number }) {
       <line x1="50" y1="5" x2="50" y2="15" stroke={OL} strokeWidth="2.5" strokeLinecap="round"/>
       {/* Star on antenna */}
       <polygon points="50,1 52,7 58,7 53,11 55,17 50,13 45,17 47,11 42,7 48,7"
-        fill="#FFD900" stroke="#C8A000" strokeWidth="1.2"/>
+        fill="#FF4D8B" stroke="#CC2D6A" strokeWidth="1.2"/>
 
       {/* ── Head shadow ── */}
       <ellipse cx="51" cy="48" rx="33" ry="31" fill={PS}/>
@@ -105,8 +105,8 @@ export function CharacterMascot({ size = 100 }: { size?: number }) {
       {/* Chest detail */}
       <rect x="40" y="81" width="20" height="14" rx="4" fill={PD} stroke={OL} strokeWidth="1.5"/>
       <circle cx="50" cy="88" r="4" fill={P} stroke={OL} strokeWidth="1.2"/>
-      <line x1="44" y1="84" x2="44" y2="91" stroke="#A78BFA" strokeWidth="1"/>
-      <line x1="56" y1="84" x2="56" y2="91" stroke="#A78BFA" strokeWidth="1" strokeOpacity="0.6"/>
+      <line x1="44" y1="84" x2="44" y2="91" stroke="#7B61FF" strokeWidth="1"/>
+      <line x1="56" y1="84" x2="56" y2="91" stroke="#7B61FF" strokeWidth="1" strokeOpacity="0.6"/>
 
       {/* ── Left arm (raised wave) ── */}
       <ellipse cx="20" cy="74" rx="8" ry="11" fill={P} stroke={OL} strokeWidth="2.5"
@@ -126,8 +126,8 @@ export function CharacterMascot({ size = 100 }: { size?: number }) {
       <rect x="35" y="103" width="13" height="20" rx="6.5" fill={PD} stroke={OL} strokeWidth="2.5"/>
       <rect x="52" y="103" width="13" height="20" rx="6.5" fill={PD} stroke={OL} strokeWidth="2.5"/>
       {/* Feet */}
-      <ellipse cx="41.5" cy="122" rx="10" ry="6" fill="#3B0764" stroke={OL} strokeWidth="2"/>
-      <ellipse cx="58.5" cy="122" rx="10" ry="6" fill="#3B0764" stroke={OL} strokeWidth="2"/>
+      <ellipse cx="41.5" cy="122" rx="10" ry="6" fill="#004D36" stroke={OL} strokeWidth="2"/>
+      <ellipse cx="58.5" cy="122" rx="10" ry="6" fill="#004D36" stroke={OL} strokeWidth="2"/>
       {/* Shoe highlight */}
       <ellipse cx="38" cy="119" rx="4" ry="2" fill="white" fillOpacity="0.18"/>
       <ellipse cx="55" cy="119" rx="4" ry="2" fill="white" fillOpacity="0.18"/>
@@ -208,8 +208,8 @@ export function CharacterCelebrate({ size = 100 }: { size?: number }) {
         transform="rotate(-8 35 104)"/>
       <rect x="52" y="104" width="13" height="18" rx="6.5" fill={PD} stroke={OL} strokeWidth="2.5"
         transform="rotate(8 65 104)"/>
-      <ellipse cx="40" cy="121" rx="10" ry="6" fill="#3B0764" stroke={OL} strokeWidth="2"/>
-      <ellipse cx="62" cy="121" rx="10" ry="6" fill="#3B0764" stroke={OL} strokeWidth="2"/>
+      <ellipse cx="40" cy="121" rx="10" ry="6" fill="#004D36" stroke={OL} strokeWidth="2"/>
+      <ellipse cx="62" cy="121" rx="10" ry="6" fill="#004D36" stroke={OL} strokeWidth="2"/>
     </svg>
   );
 }
@@ -277,8 +277,8 @@ export function CharacterProud({ size = 100 }: { size?: number }) {
       {/* ── Legs ── */}
       <rect x="35" y="103" width="13" height="20" rx="6.5" fill={PD} stroke={OL} strokeWidth="2.5"/>
       <rect x="52" y="103" width="13" height="20" rx="6.5" fill={PD} stroke={OL} strokeWidth="2.5"/>
-      <ellipse cx="41.5" cy="122" rx="10" ry="6" fill="#3B0764" stroke={OL} strokeWidth="2"/>
-      <ellipse cx="58.5" cy="122" rx="10" ry="6" fill="#3B0764" stroke={OL} strokeWidth="2"/>
+      <ellipse cx="41.5" cy="122" rx="10" ry="6" fill="#004D36" stroke={OL} strokeWidth="2"/>
+      <ellipse cx="58.5" cy="122" rx="10" ry="6" fill="#004D36" stroke={OL} strokeWidth="2"/>
     </svg>
   );
 }
@@ -344,15 +344,15 @@ export function CharacterDetermined({ size = 100 }: { size?: number }) {
       <line x1="91" y1="50" x2="91" y2="61" stroke={PS} strokeWidth="1.2"/>
       <line x1="95" y1="51" x2="95" y2="60" stroke={PS} strokeWidth="1.2"/>
       {/* Speed lines from fist */}
-      <line x1="83" y1="46" x2="78" y2="40" stroke="#A78BFA" strokeWidth="1.5" strokeLinecap="round"/>
-      <line x1="88" y1="44" x2="86" y2="38" stroke="#A78BFA" strokeWidth="1.5" strokeLinecap="round"/>
-      <line x1="93" y1="46" x2="96" y2="40" stroke="#A78BFA" strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="83" y1="46" x2="78" y2="40" stroke="#7B61FF" strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="88" y1="44" x2="86" y2="38" stroke="#7B61FF" strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="93" y1="46" x2="96" y2="40" stroke="#7B61FF" strokeWidth="1.5" strokeLinecap="round"/>
 
       {/* ── Legs ── */}
       <rect x="35" y="103" width="13" height="20" rx="6.5" fill={PD} stroke={OL} strokeWidth="2.5"/>
       <rect x="52" y="103" width="13" height="20" rx="6.5" fill={PD} stroke={OL} strokeWidth="2.5"/>
-      <ellipse cx="41.5" cy="122" rx="10" ry="6" fill="#3B0764" stroke={OL} strokeWidth="2"/>
-      <ellipse cx="58.5" cy="122" rx="10" ry="6" fill="#3B0764" stroke={OL} strokeWidth="2"/>
+      <ellipse cx="41.5" cy="122" rx="10" ry="6" fill="#004D36" stroke={OL} strokeWidth="2"/>
+      <ellipse cx="58.5" cy="122" rx="10" ry="6" fill="#004D36" stroke={OL} strokeWidth="2"/>
     </svg>
   );
 }

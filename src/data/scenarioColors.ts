@@ -1,15 +1,13 @@
-// Tonal scenario palette — same saturation/lightness structure, different hues
 export const scenarioColors: Record<string, { primary: string; border: string; borderBottom: string; bg: string }> = {
-  schule:   { primary: "#0891B2", border: "#67E8F9", borderBottom: "#0E7490", bg: "#ECFEFF" },
-  freizeit: { primary: "#7C3AED", border: "#C4B5FD", borderBottom: "#5B21B6", bg: "#F5F3FF" },
-  freunde:  { primary: "#0D9488", border: "#5EEAD4", borderBottom: "#0F766E", bg: "#F0FDFA" },
-  liebe:    { primary: "#DB2777", border: "#F9A8D4", borderBottom: "#BE185D", bg: "#FDF2F8" },
-  familie:  { primary: "#D97706", border: "#FCD34D", borderBottom: "#B45309", bg: "#FFFBEB" },
+  schule:   { primary: "#3A86FF", border: "#2066CC", borderBottom: "#1755AA", bg: "#E0ECFF" },
+  freizeit: { primary: "#E63946", border: "#C42B38", borderBottom: "#A82030", bg: "#FFE8EA" },
+  freunde:  { primary: "#FF6B9D", border: "#CC4575", borderBottom: "#A33360", bg: "#FFE4EF" },
+  liebe:    { primary: "#7B2FBE", border: "#5E1F95", borderBottom: "#4A1878", bg: "#EDE0FF" },
+  familie:  { primary: "#FFD166", border: "#CC9900", borderBottom: "#AA7F00", bg: "#FFF3CD" },
 };
 
-// Task type colors — semantically meaningful and distinct
 export const typeColors: Record<string, { color: string; label: string; bg: string; borderBottom: string }> = {
-  rolle:    { color: "#7C3AED", label: "Rolle vergeben",      bg: "#EDE9FE", borderBottom: "#5B21B6" },
-  fehler:   { color: "#DC2626", label: "Fehler finden",       bg: "#FEE2E2", borderBottom: "#B91C1C" },
-  ergebnis: { color: "#0891B2", label: "Ergebnis definieren", bg: "#ECFEFF", borderBottom: "#0E7490" },
+  rolle:    { color: "#7B2FBE", label: "Rolle vergeben",      bg: "#EDE0FF", borderBottom: "#4A1878" },
+  fehler:   { color: "#E63946", label: "Fehler finden",       bg: "#FFE8EA", borderBottom: "#A82030" },
+  ergebnis: { color: "#3A86FF", label: "Ergebnis definieren", bg: "#E0ECFF", borderBottom: "#1755AA" },
 };
